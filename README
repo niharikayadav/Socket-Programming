@@ -1,0 +1,1 @@
+This is a socket programming program. Here we have a server-client relationship. Clients send mathematical expressions to server, which server calculates and return the result back to that particular client. It is a multithreaded project.
