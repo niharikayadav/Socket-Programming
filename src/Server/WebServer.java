@@ -2,17 +2,18 @@ package Server;
 
 import java.io.*;
 import java.net.*;
-/* class webserver will run till the time it gets connection from the client. 
- * webserver listens to the requests from the clients.
- * When a client sends a request to server, it accepts it.
+
+/* This a mathematical client-server based application,
+ * where client sends a request to server with an expression,
+ * server then calculates the result and sends the result back to client  
  */
-public class webserver {
+public class WebServer {
 	
-    //A server socket waits for requests to come in over the network.
+    // a server socket waits for requests to come in over the network.
 	private ServerSocket ss;
 	
 	//constructor to initialize the port which is entered at the time of execution.
-	public webserver(int port) throws IOException {
+	public WebServer(int port) throws IOException {
 		ss = new ServerSocket(port);
 	}
 
@@ -21,12 +22,14 @@ public class webserver {
 	 * 2. initiates a thread for different clients
 	 */
 	public void connect() {
+		
 		while (true) {
+			
 			try {
 				System.out.println("Waiting for Client on port " + ss.getLocalPort() + "...");
 				Socket nayaclient = ss.accept();
 				System.out.println("Just Connected to " + nayaclient.getRemoteSocketAddress());
-				multithreaded t = new multithreaded(nayaclient);
+				ClientHandler t = new ClientHandler(nayaclient);
 				t.start();
 			} catch (SocketTimeoutException s1) {
 				System.out.println("Socket timed out! ");
@@ -38,11 +41,11 @@ public class webserver {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		int port = Integer.parseInt(args[0]);
 		try {
-				webserver w = new webserver(port);
-				w.connect();
+			WebServer w = new WebServer(port);
+			w.connect();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
